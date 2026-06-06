@@ -1719,6 +1719,19 @@ body {
     background: linear-gradient(135deg, #333, #555);
 }
 
+/* WhatsApp */
+.social-icon.whatsapp::before {
+    background: linear-gradient(135deg, #25D366, #128C7E);
+}
+
+.social-icon.whatsapp:hover::before {
+    opacity: 1;
+}
+
+.social-icon.whatsapp:hover {
+    box-shadow: 0 8px 25px rgba(37, 211, 102, 0.5);
+}
+
 .social-icon.github:hover::before {
     opacity: 1;
 }

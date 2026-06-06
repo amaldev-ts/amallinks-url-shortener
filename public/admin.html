@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - AmalLinks</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔗</text></svg>">
+</head>
+<body>
+    <!-- Background Animation -->
+    <div class="bg-animation">
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a href="/" class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-link"></i>
+            </div>
+            <span class="logo-text">AmalLinks</span>
+        </a>
+        <div class="nav-actions">
+            <a href="https://www.instagram.com/amaldev_ts/" target="_blank" rel="noopener noreferrer" class="admin-link insta-link" title="Follow on Instagram">
+                <i class="fab fa-instagram"></i>
+                <span>Follow</span>
+            </a>
+            <a href="/" class="admin-link">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <button class="theme-toggle" id="themeToggle" title="Toggle Theme">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Login Section -->
+    <div class="login-container" id="loginContainer">
+        <div class="glass-card login-card">
+            <h2>🔐 Admin Access</h2>
+            <p>Sign in to manage your URL shortener</p>
+
+            <div class="login-tabs">
+                <button class="login-tab active" data-tab="login">Sign In</button>
+                <button class="login-tab" data-tab="register">Register</button>
+            </div>
+
+            <!-- Login Form -->
+            <form class="login-form" id="loginForm">
+                <div class="input-wrapper">
+                    <i class="fas fa-envelope input-icon"></i>
+                    <input type="email" id="loginEmail" placeholder="admin@email.com" required>
+                </div>
+                <div class="input-wrapper">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="loginPassword" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn-shorten">
+                    <div class="spinner"></div>
+                    <span class="btn-text">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Sign In
+                    </span>
+                </button>
+            </form>
+
+            <!-- Register Form -->
+            <form class="login-form" id="registerForm" style="display: none;">
+                <div class="input-wrapper">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" id="regUsername" placeholder="Username" required>
+                </div>
+                <div class="input-wrapper">
+                    <i class="fas fa-envelope input-icon"></i>
+                    <input type="email" id="regEmail" placeholder="admin@email.com" required>
+                </div>
+                <div class="input-wrapper">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="regPassword" placeholder="Password (min 6 chars)" required minlength="6">
+                </div>
+                <div class="input-wrapper">
+                    <i class="fas fa-key input-icon"></i>
+                    <input type="text" id="regSetupKey" placeholder="Setup Key" required>
+                </div>
+                <button type="submit" class="btn-shorten">
+                    <div class="spinner"></div>
+                    <span class="btn-text">
+                        <i class="fas fa-user-plus"></i>
+                        Create Account
+                    </span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard Section -->
+    <div class="admin-container" id="dashboardContainer" style="display: none;">
+        <div class="dashboard-header">
+            <h1>📊 Dashboard</h1>
+            <div class="dashboard-actions">
+                <button class="btn-outline" id="refreshBtn">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+                <button class="btn-outline btn-danger" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="dashboard-stats" id="dashboardStats">
+            <div class="dash-stat-card">
+                <div class="stat-icon"><i class="fas fa-link"></i></div>
+                <div class="dash-stat-value" id="dashTotalUrls">0</div>
+                <div class="dash-stat-label">Total URLs</div>
+            </div>
+            <div class="dash-stat-card">
+                <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                <div class="dash-stat-value" id="dashActiveUrls">0</div>
+                <div class="dash-stat-label">Active URLs</div>
+            </div>
+            <div class="dash-stat-card">
+                <div class="stat-icon"><i class="fas fa-mouse-pointer"></i></div>
+                <div class="dash-stat-value" id="dashTotalClicks">0</div>
+                <div class="dash-stat-label">Total Clicks</div>
+            </div>
+            <div class="dash-stat-card">
+                <div class="stat-icon"><i class="fas fa-calendar-day"></i></div>
+                <div class="dash-stat-value" id="dashTodayUrls">0</div>
+                <div class="dash-stat-label">Today's URLs</div>
+            </div>
+            <div class="dash-stat-card">
+                <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                <div class="dash-stat-value" id="dashExpiredUrls">0</div>
+                <div class="dash-stat-label">Expired</div>
+            </div>
+        </div>
+
+        <!-- URLs Table -->
+        <div class="urls-section">
+            <div class="section-header">
+                <h2>All URLs</h2>
+                <div class="search-filter">
+                    <input type="text" class="search-input" id="searchInput" placeholder="🔍 Search URLs...">
+                    <select class="filter-select" id="statusFilter">
+                        <option value="all">All Status</option>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                        <option value="expired">Expired</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="url-table-container">
+                <table class="url-table">
+                    <thead>
+                        <tr>
+                            <th>Short URL</th>
+                            <th>Original URL</th>
+                            <th>Clicks</th>
+                            <th>Status</th>
+                            <th>Created</th>
+                            <th>Expires</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="urlTableBody">
+                        <tr>
+                            <td colspan="7">
+                                <div class="empty-state">
+                                    <i class="fas fa-link"></i>
+                                    <h3>Loading URLs...</h3>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pagination" id="pagination"></div>
+        </div>
+
+        <!-- Admin Footer -->
+        <footer class="footer">
+            <div class="footer-main">
+                <p>
+                    Built with <span class="heart">❤️</span> by 
+                    <a href="https://www.instagram.com/amaldev_ts/" target="_blank" rel="noopener noreferrer" class="author-link">
+                        <i class="fab fa-instagram"></i>
+                        <span>Amal Dev</span>
+                    </a>
+                </p>
+            </div>
+            <p class="footer-tagline">ADMIN PANEL • SECURE • MANAGED</p>
+        </footer>
+    </div>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AmalLinks - Professional URL Shortener by Amal Dev</title>
+    <meta name="description" content="Shorten URLs with custom aliases, QR codes, analytics, and more. Built by Amal Dev.">
+    <meta name="author" content="Amal Dev">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔗</text></svg>">
+</head>
+<body>
+    <!-- Background Animation -->
+    <div class="bg-animation">
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a href="/" class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-link"></i>
+            </div>
+            <span class="logo-text">AmalLinks</span>
+        </a>
+        <div class="nav-actions">
+            <a href="https://www.instagram.com/amaldev_ts/" target="_blank" rel="noopener noreferrer" class="admin-link insta-link" title="Follow on Instagram">
+                <i class="fab fa-instagram"></i>
+                <span>Follow</span>
+            </a>
+            <a href="/admin" class="admin-link">
+                <i class="fas fa-shield-halved"></i>
+                <span>Admin</span>
+            </a>
+            <button class="theme-toggle" id="themeToggle" title="Toggle Theme">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>Shorten Your Links,<br>Amplify Your Reach</h1>
+            <p>Create custom short URLs with analytics, QR codes, and expiry dates — all for free.</p>
+        </section>
+
+        <!-- URL Shortener Card -->
+        <div class="glass-card">
+            <form class="url-form" id="urlForm">
+                <!-- URL Input -->
+                <div class="input-group">
+                    <label>Enter Your URL</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-globe input-icon"></i>
+                        <input
+                            type="text"
+                            id="urlInput"
+                            placeholder="https://example.com/your-very-long-url-here"
+                            autocomplete="off"
+                            spellcheck="false"
+                            required
+                        >
+                    </div>
+                    <div class="url-validation" id="urlValidation"></div>
+                </div>
+
+                <!-- Advanced Options Toggle -->
+                <button type="button" class="advanced-toggle" id="advancedToggle">
+                    <i class="fas fa-sliders"></i>
+                    Advanced Options
+                    <span class="arrow">▼</span>
+                </button>
+
+                <!-- Advanced Options -->
+                <div class="advanced-options" id="advancedOptions">
+                    <!-- Custom Alias -->
+                    <div class="input-group">
+                        <label>Custom Alias (Optional)</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-at input-icon"></i>
+                            <input
+                                type="text"
+                                id="aliasInput"
+                                placeholder="my-custom-link"
+                                autocomplete="off"
+                                spellcheck="false"
+                            >
+                            <span class="alias-status" id="aliasStatus"></span>
+                        </div>
+                    </div>
+
+                    <!-- Expiry Date -->
+                    <div class="input-group">
+                        <label>Expiry Date</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-clock input-icon"></i>
+                            <select id="expirySelect">
+                                <option value="never">Never Expires</option>
+                                <option value="1h">1 Hour</option>
+                                <option value="24h">24 Hours</option>
+                                <option value="7d">7 Days</option>
+                                <option value="30d">30 Days</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn-shorten" id="shortenBtn">
+                    <div class="spinner"></div>
+                    <span class="btn-text">
+                        <i class="fas fa-bolt"></i>
+                        Shorten URL
+                    </span>
+                </button>
+            </form>
+
+            <!-- Result Section -->
+            <div class="result-section" id="resultSection">
+                <div class="result-card">
+                    <div class="result-label">Your Shortened URL</div>
+                    <div class="result-url">
+                        <a href="#" id="shortUrlLink" target="_blank"></a>
+                    </div>
+
+                    <div class="result-original">
+                        <i class="fas fa-arrow-turn-up" style="transform: rotate(90deg); margin-right: 6px;"></i>
+                        <span id="originalUrlText"></span>
+                    </div>
+
+                    <div class="result-actions">
+                        <button class="result-btn copy-btn" id="copyBtn" title="Copy to clipboard">
+                            <i class="fas fa-copy"></i>
+                            Copy
+                        </button>
+                        <button class="result-btn qr-btn" id="qrBtn" title="Generate QR Code">
+                            <i class="fas fa-qrcode"></i>
+                            QR Code
+                        </button>
+                        <button class="result-btn stats-btn" id="statsBtn" title="View Statistics">
+                            <i class="fas fa-chart-bar"></i>
+                            Stats
+                        </button>
+                    </div>
+
+                    <div class="result-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-mouse-pointer"></i>
+                            <span id="clickCountMeta">0 clicks</span>
+                        </div>
+                        <div class="meta-item" id="expiryMeta" style="display: none;">
+                            <i class="fas fa-calendar-xmark"></i>
+                            <span id="expiryText"></span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-calendar-plus"></i>
+                            <span id="createdText"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats Section -->
+                <div class="stats-section" id="statsSection">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value" id="statClicks">0</div>
+                            <div class="stat-label">Total Clicks</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="statCreated">-</div>
+                            <div class="stat-label">Created</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="statStatus">Active</div>
+                            <div class="stat-label">Status</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <section class="features-section">
+            <h2 class="features-title">Powerful Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon purple">
+                        <i class="fas fa-link"></i>
+                    </div>
+                    <h3>Custom Aliases</h3>
+                    <p>Choose memorable, branded short links that reflect your content.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon pink">
+                        <i class="fas fa-qrcode"></i>
+                    </div>
+                    <h3>QR Code Generation</h3>
+                    <p>Generate downloadable QR codes instantly for any shortened URL.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon cyan">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Click Analytics</h3>
+                    <p>Track clicks, referrers, and user agents in real-time.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon green">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>Expiry Dates</h3>
+                    <p>Set automatic expiration for temporary links and campaigns.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon orange">
+                        <i class="fas fa-shield-halved"></i>
+                    </div>
+                    <h3>Admin Dashboard</h3>
+                    <p>Full admin panel to manage, monitor, and control all URLs.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon red">
+                        <i class="fas fa-moon"></i>
+                    </div>
+                    <h3>Dark Mode</h3>
+                    <p>Beautiful glassmorphism design with dark & light themes.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-main">
+                <p>
+                    Built with <span class="heart">❤️</span> by 
+                    <a href="https://www.instagram.com/amaldev_ts/" target="_blank" rel="noopener noreferrer" class="author-link">
+                        <i class="fab fa-instagram"></i>
+                        <span>Amal Dev</span>
+                    </a>
+                </p>
+            </div>
+            <div class="footer-socials">
+                <a href="https://www.instagram.com/amaldev_ts/" target="_blank" rel="noopener noreferrer" class="social-icon insta" title="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="mailto:amaldev_ts@gmail.com" class="social-icon mail" title="Email">
+                    <i class="fas fa-envelope"></i>
+                </a>
+                <a href="#" class="social-icon github" title="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+            </div>
+            <p class="footer-tagline">FAST • SECURE • FREE FOREVER</p>
+            <p class="footer-copyright">© 2024 AmalLinks. All rights reserved.</p>
+        </footer>
+    </main>
+
+    <!-- QR Code Modal -->
+    <div class="modal-overlay" id="qrModal">
+        <div class="modal">
+            <button class="modal-close" id="qrModalClose">
+                <i class="fas fa-xmark"></i>
+            </button>
+            <h3><i class="fas fa-qrcode"></i> QR Code</h3>
+            <div class="qr-container">
+                <img id="qrCodeImg" src="" alt="QR Code">
+            </div>
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;" id="qrUrlText"></p>
+            <button class="qr-download-btn" id="qrDownloadBtn">
+                <i class="fas fa-download"></i>
+                Download QR Code
+            </button>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
